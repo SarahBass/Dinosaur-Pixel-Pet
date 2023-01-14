@@ -52,6 +52,7 @@ let pets = 0;
 let v = 0;
 let annoy = 0;
 let sad = 0;
+let age = 0;
 
 //Update the clock every second 
 clock.granularity = "seconds";
@@ -251,24 +252,22 @@ button1.onclick = function(evt) { buttonnumber++; }
     
   }
   
-  //--------------CHANGE PET FORM IN FOREGROUND ------------------
-  //pet/pet3v0a1
-pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
-    //----------Pet Evolution Egg -------------------
-  if (userActivity.adjusted.steps < goals.steps/5){
-     pets = 0;
-    if (basic > 100) {
-      if (naughty > 100) {
+  
+    if (userActivity.adjusted.steps < goals.steps){   
+    if (basic > age) {
+      if (naughty > age ) {
         v = 0;}
       else { v = 1; }
     }else {
-       if (naughty > 100) {v = 3;}
+       if (naughty > age) {v = 3;}
       else { 
-        if (sad > 100 ) {v=2;}
+        if (sad > age ) {v=2;}
        else {v = 4;} }
-    }
+      }
+  }else{
+       if (naughty > age ) { v = 0;}
+      else { v = 1; }
   }
-  
   //0 is worst 
   //1 is best and good
   //2 is sad but good
@@ -276,35 +275,46 @@ pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
   //4 is weird but good
     //----------Pet Evolution Baby Pet -------------------
   
+  //--------------CHANGE PET FORM IN FOREGROUND ------------------
+  //pet/pet3v0a1.png
+pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
+    //----------Pet Evolution Egg -------------------
+  if (userActivity.adjusted.steps < goals.steps/5){
+  pets = 0;
+  age = 100;}
   else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {
          pets = 1;
-    
+         age = 200;
   }
   
   //----------Pet Evolution Mini Pet -------------------
   
   else if ((userActivity.adjusted.steps < ((goals.steps)*3)/5)&& (userActivity.adjusted.steps > ((goals.steps*2)/5))){
          pets = 2;
+         age = 300;
   }
   
     //----------Pet Evolution Cup Pet -------------------
   
   else if ((userActivity.adjusted.steps < ((goals.steps)*4)/5)&& (userActivity.adjusted.steps > ((goals.steps*3)/5)))
            {
- pets = 3;
+             pets = 3;
+             age = 400;
            }
   
     //----------Pet Evolution Adult Pet -------------------
   
   else if ((userActivity.adjusted.steps < goals.steps)&& (userActivity.adjusted.steps > ((goals.steps*4)/5)))
            {
-pets = 4;
+             pets = 4;
+             age = 500;
            }
   //---------Game Over Pet ------------------
   
   else if (userActivity.adjusted.steps > goals.steps){
     
     pets = 5;
+    age = 600;
     
   } else { if (seconds % 2 == 0){pet.image = "pet/pet1animate0.png";}
      else{pet.image = "pet/pet1animate1.png";}}
