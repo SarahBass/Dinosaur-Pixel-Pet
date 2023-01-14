@@ -258,12 +258,14 @@ pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
   if (userActivity.adjusted.steps < goals.steps/5){
      pets = 0;
     if (basic > 100) {
-      if (naughty > 100) {v = 0;}
+      if (naughty > 100) {
+        v = 0;}
       else { v = 1; }
     }else {
        if (naughty > 100) {v = 3;}
-      else { v = 4; }
-      // v = 2 is special
+      else { 
+        if (sad > 100 ) {v=2;}
+       else {v = 4;} }
     }
   }
   
