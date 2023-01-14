@@ -269,6 +269,11 @@ pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
     }
   }
   
+  //0 is worst 
+  //1 is best and good
+  //2 is sad but good
+  //3 is weird and worst
+  //4 is weird but good
     //----------Pet Evolution Baby Pet -------------------
   
   else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {
