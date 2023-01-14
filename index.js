@@ -51,7 +51,7 @@ let basic = 0;
 let pets = 0;
 let v = 0;
 let annoy = 0;
-let happy = 0;
+let sad = 0;
 
 //Update the clock every second 
 clock.granularity = "seconds";
@@ -142,6 +142,10 @@ clock.ontick = (evt) => {
   if (basic >= 1000){basic = 1000;}
   if (basic <= 0){basic = 0;} 
   
+    //Annoying Critters increases sadness
+  if (sad >= 1000){sad = 1000;}
+  if (sad <= 0){sad = 0;} 
+  
   
         //Move hand to clean Pet Poop only if poop level is more than 0
     //Reduce Accelerometer as much as possible and use batches and lower frequency
@@ -193,8 +197,8 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   if (poops == 0) { 
   if (annoy > 0){
     poop.image = "poop/annoy" + (parseInt(mins/10)) + ".png";
+    if (annoy > 2){annoy ++;}
   }else {poop.image= "blank.png";}
-  
   }else if (poops == 1) {
      if (seconds % 2 == 0){poop.image = "poop/poop0.png";}
      else{poop.image = "poop/poop1.png";}}
@@ -249,7 +253,7 @@ button1.onclick = function(evt) { buttonnumber++; }
   
   //--------------CHANGE PET FORM IN FOREGROUND ------------------
   //pet/pet3v0a1
-pet.image = "pet/pet" + pets + "v" + v + "a" + (seconds%2)+ ".png";
+pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
     //----------Pet Evolution Egg -------------------
   if (userActivity.adjusted.steps < goals.steps/5){
      pets = 0;
