@@ -46,10 +46,10 @@ let object = document.getElementById("object");
 let poop = document.getElementById("poop");
 let buttonnumber = 0;
 let poops = 0;
-let petnaughty = 0;
+let naughty = 0;
 let basic = 0;
 let pets = 0;
-let v = 0;
+let version = 0;
 let annoy = 0;
 let sad = 0;
 let age = 0;
@@ -223,6 +223,7 @@ if ((util.zeroPad(hours) == 0)&& (minutes == 1)){
   petnaughty = 0;
   poops = 0;
   basic = 0;
+  sad = 0;
 }
   
   
@@ -252,21 +253,21 @@ button1.onclick = function(evt) { buttonnumber++; }
     
   }
   
-  
+  //Change version number based on stats
     if (userActivity.adjusted.steps < goals.steps){   
     if (basic > age) {
       if (naughty > age ) {
-        v = 0;}
-      else { v = 1; }
+        version = 0;}
+      else { version = 1; }
     }else {
-       if (naughty > age) {v = 3;}
+       if (naughty > age) {version = 3;}
       else { 
-        if (sad > age ) {v=2;}
-       else {v = 4;} }
+        if (sad > age ) {version=2;}
+       else {version = 4;} }
       }
   }else{
-       if (naughty > age ) { v = 0;}
-      else { v = 1; }
+       if (naughty > age ) { version = 0;}
+      else { version = 1; }
   }
   //0 is worst 
   //1 is best and good
@@ -277,7 +278,7 @@ button1.onclick = function(evt) { buttonnumber++; }
   
   //--------------CHANGE PET FORM IN FOREGROUND ------------------
   //pet/pet3v0a1.png
-pet.image = "pet/pet" + pets + "v" + v + "a" + (parseInt(seconds%2))+ ".png";
+pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
     //----------Pet Evolution Egg -------------------
   if (userActivity.adjusted.steps < goals.steps/5){
   pets = 0;
