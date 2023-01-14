@@ -46,7 +46,7 @@ let object = document.getElementById("object");
 let poop = document.getElementById("poop");
 let buttonnumber = 0;
 let poops = 0;
-let naughty = 0;
+let petnaughty = 0;
 let basic = 0;
 let pets = 0;
 let version = 0;
@@ -256,17 +256,17 @@ button1.onclick = function(evt) { buttonnumber++; }
   //Change version number based on stats
     if (userActivity.adjusted.steps < goals.steps){   
     if (basic > age) {
-      if (naughty > age ) {
+      if (petnaughty > age ) {
         version = 0;}
       else { version = 1; }
     }else {
-       if (naughty > age) {version = 3;}
+       if (petnaughty > age) {version = 3;}
       else { 
         if (sad > age ) {version=2;}
        else {version = 4;} }
       }
   }else{
-       if (naughty > age ) { version = 0;}
+       if (petnaughty > age ) { version = 0;}
       else { version = 1; }
   }
   //0 is worst 
