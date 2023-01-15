@@ -217,7 +217,9 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   }
     //If a ghost, show game over
     else if (userActivity.adjusted.steps >= goals.steps) {
-      
+      if (petnaughty > age){poop.image = "gameoverv0a" + seconds%2 + ".png";}
+      else if (basic > age ){poop.image = "gameoverv1a" + seconds%2 + ".png";}
+      else {poop.image = "gameoverv2a" + seconds%2 + ".png";}
     }
     
     //last else statement - show blank
