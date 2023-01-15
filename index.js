@@ -121,9 +121,10 @@ clock.ontick = (evt) => {
   else{ampm.text = "AM";}
   
   
-  //Change Pet Animations and Backgrounds
+  //Backgrounds based on day. Game Over has special background
 
-  background.image = days + ".jpeg";
+if (userActivity.adjusted.steps > goals.steps){background.image = "Gameover.jpeg";}
+  else{background.image = days + ".jpeg";}
   
  //Pet creates waste based on 100 steps 
   if ((userActivity.adjusted.steps%100) == 0){poops++;}
@@ -199,7 +200,9 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   if (annoy > 0){
     poop.image = "poop/annoy" + (parseInt(mins/10)) + ".png";
     if (annoy > 2){annoy ++;}
-  }else {poop.image= "blank.png";}
+  }else { 
+    if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
+     else{poop.image = "poop/nopoop2.png";}}
   }else if (poops == 1) {
      if (seconds % 2 == 0){poop.image = "poop/poop0.png";}
      else{poop.image = "poop/poop1.png";}}
@@ -213,13 +216,15 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   
   }
     //If a ghost, show game over
-    else if (userActivity.adjusted.steps >= goals.steps) {poop.image = "poop/gameover.png";}
+    else if (userActivity.adjusted.steps >= goals.steps) {
+      
+    }
     
     //last else statement - show blank
   else {poop.image = "blank.png";}
 
  //Reset stats at midnight
-if ((util.zeroPad(hours) == 0)&& (minutes == 1)){
+if ((util.zeroPad(hours) == 0)&& (mins == 1)){
   petnaughty = 0;
   poops = 0;
   basic = 0;
@@ -266,8 +271,8 @@ button1.onclick = function(evt) { buttonnumber++; }
        else {version = 4;} }
       }
   }else{
-       if (petnaughty > age ) { version = 0;}
-      else { version = 1; }
+        version = 0;
+      
   }
   //0 is worst 
   //1 is best and good
