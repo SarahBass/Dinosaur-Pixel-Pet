@@ -126,21 +126,21 @@ clock.ontick = (evt) => {
 if (userActivity.adjusted.steps > goals.steps){background.image = "Gameover.jpeg";}
   else{background.image = days + ".jpeg";}
   
- //Pet creates waste based on 100 steps 
-  if ((userActivity.adjusted.steps%100) == 0){poops++;}
+ //Pet creates waste based on time
+  if (mins%10 == 0){poops++;}
   if (poops <= 0 ) {poops = 0;}
   if (poops >= 5){poops = 5}
   
-   //Pet gets annoyed based on 50 steps 
+   //Pet gets annoyed based on steps
   if ((userActivity.adjusted.steps%50) == 0){annoy++;}
   if (annoy <= 0 ) {annoy = 0;}
   if (annoy >= 5){annoy = 5}
   
-  //Not Cleaning makes Pet Naughty
+  //Not Cleaning makes Pet Naughty to level 1000
   if ( petnaughty >= 1000){petnaughty = 1000;}
   if (petnaughty <= 0){petnaughty = 0;}
   
-  //Sleeping increases cuteness level of form
+  //Sleeping increases cuteness level of form to level 1000
   if (basic >= 1000){basic = 1000;}
   if (basic <= 0){basic = 0;} 
   
@@ -159,7 +159,7 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
    //console.log("Basic Level: " + basic);
    const accelerometer = new Accelerometer({ frequency: 30, batch: 60 });
    accelerometer.addEventListener("reading", () => { 
-    if (accelerometer.y < 2){   
+    if (accelerometer.y < 4){   
       annoy--;
       poops--;}
   });  
@@ -175,7 +175,7 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   //Change animation in background to show game over or pet waste
   
   // If in egg show snakes instead of poops
-  if (userActivity.adjusted.steps < goals.steps/5){
+  if (userActivity.adjusted.steps < goals.steps/5 ){
   if (poops == 0) { poop.image ="blank.png"}
   else if (poops == 1) {
      if (seconds % 2 == 0){poop.image = "poop/snake0.png";}
@@ -194,7 +194,7 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   
   //if 0 poops , shows annow every 50 steps
   
-  else if ((userActivity.adjusted.steps > goals.steps/5) &&  (userActivity.adjusted.steps < goals.steps)){
+  else if ((userActivity.adjusted.steps >= goals.steps/5) &&  (userActivity.adjusted.steps < goals.steps)){
     
   if (poops == 0) { 
   if (annoy > 0){
@@ -215,15 +215,16 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
      else{poop.image = "poop/poop5.png";}}
   
   }
-    //If a ghost, show game over
+    //If a ghost, show game over + seconds%2 + ".png";
     else if (userActivity.adjusted.steps >= goals.steps) {
-      if (petnaughty > age){poop.image = "gameoverv0a" + seconds%2 + ".png";}
-      else if (basic > age ){poop.image = "gameoverv1a" + seconds%2 + ".png";}
-      else {poop.image = "gameoverv2a" + seconds%2 + ".png";}
+      if (petnaughty > age){poop.image = "poop/gameoverv0a" + seconds%2 + ".png";}
+      else if (basic > age ){poop.image = "poop/gameoverv1a" + seconds%2 + ".png";}
+      else {poop.image = "poop/gameoverv2a" + seconds%2 + ".png";}
     }
     
     //last else statement - show blank
-  else {poop.image = "blank.png";}
+  else {if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
+     else{poop.image = "poop/nopoop2.png";}}
 
  //Reset stats at midnight
 if ((util.zeroPad(hours) == 0)&& (mins == 1)){
@@ -231,6 +232,7 @@ if ((util.zeroPad(hours) == 0)&& (mins == 1)){
   poops = 0;
   basic = 0;
   sad = 0;
+  annoy= 0;
 }
   
   
