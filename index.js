@@ -1,6 +1,6 @@
 /*
 ----------------------------------------------
- *  Project:   Pixel Pet Clock Face
+ *  Project:   Pixel Pet Dinosaur Clock Face
  *  Mail:       darahbass@gmail.com
  *  Github:     SarahBass
  ---------------------------------------------
@@ -109,7 +109,6 @@ clock.ontick = (evt) => {
   stairslabel.text = userActivity.adjusted.elevationGain;
   stepsLabel.text = userActivity.adjusted.steps;
   firelabel.text = userActivity.adjusted.calories;
- // targetlabel.text = parseInt(userActivity.adjusted.steps/goals.steps * 100) + "%";
   boltlabel.text = userActivity.adjusted.activeZoneMinutes.total;
   heartlabel.text = "off";  
   checkAndUpdateBatteryLevel();
@@ -126,40 +125,92 @@ clock.ontick = (evt) => {
 if (userActivity.adjusted.steps > goals.steps){background.image = "Gameover.jpeg";}
   else{background.image = days + ".jpeg";}
   
+  
  //Pet creates waste based on time
-  if (mins%10 == 0){poops++;}
+  if (userActivity.adjusted.steps%25 == 0){poops++;}
   if (poops <= 0 ) {poops = 0;}
   if (poops >= 5){poops = 5}
   
    //Pet gets annoyed based on steps
-  if ((userActivity.adjusted.steps%50) == 0){annoy++;}
+  if ((userActivity.adjusted.steps%10) == 0){annoy++;}
   if (annoy <= 0 ) {annoy = 0;}
   if (annoy >= 5){annoy = 5}
   
   //Not Cleaning makes Pet Naughty to level 1000
-  if ( petnaughty >= 1000){petnaughty = 1000;}
+  if ( petnaughty >= 100){petnaughty = 100;}
   if (petnaughty <= 0){petnaughty = 0;}
   
   //Sleeping increases cuteness level of form to level 1000
-  if (basic >= 1000){basic = 1000;}
+  if (basic >= 100){basic = 100;}
   if (basic <= 0){basic = 0;} 
   
     //Annoying Critters increases sadness
-  if (sad >= 1000){sad = 1000;}
+  if (sad >= 100){sad = 100;}
   if (sad <= 0){sad = 0;} 
   
+
+ //Reset stats at midnight
+if ((util.zeroPad(hours) == 0)&& (mins == 1)){
+  petnaughty = 0;
+  poops = 0;
+  basic = 0;
+  sad = 0;
+  annoy= 0;
+}
   
-        //Move hand to clean Pet Poop only if poop level is more than 0
-    //Reduce Accelerometer as much as possible and use batches and lower frequency
+    //shake wrist to clear 
+  cleanpoops();
   
-if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
- if (Accelerometer) {
+  //show poop or enemies
+  showPoop();
+  
+  //show dinosaur 
+  showDino();
+  
+  //show heart meter
+  showHearts();
+  
+  //Sleep Mode
+
+  showSleep();
+  
+  
+   /*--- OPTION 2: TIME IMAGES FOR 12 HOUR CLOCK---*/
+  //set class of each # IMAGE individually if needed for formatting
+  if (preferences.clockDisplay === "12h") {
+    // 12h format
+    hours = hours % 12 || 12;
+  }else {hours = util.zeroPad(hours);}
+  myLabel.text = `${hours}:${mins}`; 
+  /*----------------------------SHOW CLOCK END----------------------------------*/                      
+
+/*
+  /*--- Battery Functions ---*/
+  display.addEventListener('change', function () { if (this.on) {checkAndUpdateBatteryLevel();}
+                                             
+});
+/*----------------------------END OF ON TICK-----------------------------------*/
+  
+/*----------------------------START OF FUNCTIONS--------------------------------*/
+
+ /*--- Change Battery RED , GREEN & CHARGE ---*/  
+
+function checkAndUpdateBatteryLevel() {
+  batteryLabel.text = `${battery.chargeLevel}%`;
+  if (battery.chargeLevel > 30){ batteryLabel.class = "labelgreen";}
+  else {batteryLabel.class = "labelred";
+        battery.onchange = (charger, evt) => {batteryLabel.class = "labelgreen";}}
+}
+ 
+  
+  function cleanpoops(){
+    if (Accelerometer) {
    //console.log("Poop Level: " + poops);
    //console.log("Naughty Level: " + petnaughty);
    //console.log("Basic Level: " + basic);
    const accelerometer = new Accelerometer({ frequency: 30, batch: 60 });
    accelerometer.addEventListener("reading", () => { 
-    if (accelerometer.y < 4){   
+    if (accelerometer.y > 6){   
       annoy--;
       poops--;}
   });  
@@ -170,10 +221,55 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
        accelerometer.start();
   }
   else {console.log("This device does NOT have an Accelerometer!");}
+  
+  
   }
   
-  //Change animation in background to show game over or pet waste
   
+  
+  function showSleep(){
+    button1.onclick = function(evt) { buttonnumber++; }
+
+  if (buttonnumber == 1){
+                    distancelabel.class = "labelseeblue";
+                    firelabel.class  = "labelseeblue";
+                    boltlabel.class  = "labelseeblue";
+                    heartlabel.class  = "labelseeblue";
+                    stairslabel.class  = "labelseeblue";
+                    evolution.class = "none";
+                    basic++;
+                    
+                      if (seconds % 2 == 0){object.image = "read.jpeg";}
+                      else{object.image = "read1.jpeg";}
+  }else{
+                    buttonnumber = 0;
+                    distancelabel.class = "none";
+                    firelabel.class  = "none";
+                    boltlabel.class  = "none";
+                    heartlabel.class  = "none";
+                    stairslabel.class  = "none";
+                    object.image = "blank.png";
+                    evolution.class = "meter";
+    
+  }
+  }
+  
+  
+  
+  
+  function showHearts(){
+    if (userActivity.adjusted.steps < goals.steps/5){evolution.text = "♥";}
+  else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {evolution.text = "♥♥";}
+  else if ((userActivity.adjusted.steps < ((goals.steps)*3)/5)&& (userActivity.adjusted.steps > ((goals.steps*2)/5)))
+  {evolution.text = "♥♥♥";}
+  else if ((userActivity.adjusted.steps < ((goals.steps)*4)/5)&& (userActivity.adjusted.steps > ((goals.steps*3)/5)))
+           {evolution.text = "♥♥♥♥";}
+  else if ((userActivity.adjusted.steps < goals.steps)&& (userActivity.adjusted.steps > ((goals.steps*4)/5)))
+           {evolution.text = "♥♥♥♥♥";}
+  else if (userActivity.adjusted.steps > goals.steps){evolution.text = "♥♥♥♥♥♥";}
+  else {evolution.text = "";}
+  }
+ function showPoop() {
   // If in egg show snakes instead of poops
   if (userActivity.adjusted.steps < goals.steps/5 ){
   if (poops == 0) { poop.image ="blank.png"}
@@ -192,7 +288,7 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
   
   //if not an egg or not a ghost , show poops
   
-  //if 0 poops , shows annow every 50 steps
+  //if 0 poops , shows annoy every 50 steps
   
   else if ((userActivity.adjusted.steps >= goals.steps/5) &&  (userActivity.adjusted.steps < goals.steps)){
     
@@ -223,45 +319,10 @@ if ((poops > 0) && (userActivity.adjusted.steps < goals.steps) ){
     }
     
     //last else statement - show blank
-  else {if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
-     else{poop.image = "poop/nopoop2.png";}}
-
- //Reset stats at midnight
-if ((util.zeroPad(hours) == 0)&& (mins == 1)){
-  petnaughty = 0;
-  poops = 0;
-  basic = 0;
-  sad = 0;
-  annoy= 0;
-}
+  else {if (seconds % 2 == 0){poop.image = "blank.png";}
+     else{poop.image = "blank.png";}}}
   
-  
-  //Show large text Clock if clicked
-button1.onclick = function(evt) { buttonnumber++; }
-
-  if (buttonnumber == 1){
-                    distancelabel.class = "labelseeblue";
-                    firelabel.class  = "labelseeblue";
-                    boltlabel.class  = "labelseeblue";
-                    heartlabel.class  = "labelseeblue";
-                    stairslabel.class  = "labelseeblue";
-                    evolution.class = "none";
-                    basic++;
-                    
-                      if (seconds % 2 == 0){object.image = "read.jpeg";}
-                      else{object.image = "read1.jpeg";}
-  }else{
-                    buttonnumber = 0;
-                    distancelabel.class = "none";
-                    firelabel.class  = "none";
-                    boltlabel.class  = "none";
-                    heartlabel.class  = "none";
-                    stairslabel.class  = "none";
-                    object.image = "blank.png";
-                    evolution.class = "meter";
-    
-  }
-  
+  function showDino(){
   //Change version number based on stats
     if (userActivity.adjusted.steps < goals.steps){   
     if (basic > age) {
@@ -291,17 +352,16 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
     //----------Pet Evolution Egg -------------------
   if (userActivity.adjusted.steps < goals.steps/5){
   pets = 0;
-  age = 100;}
+  age = 20;}
   else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {
          pets = 1;
-         age = 200;
+         age = 30;
   }
-  
   //----------Pet Evolution Mini Pet -------------------
   
   else if ((userActivity.adjusted.steps < ((goals.steps)*3)/5)&& (userActivity.adjusted.steps > ((goals.steps*2)/5))){
          pets = 2;
-         age = 300;
+         age = 40;
   }
   
     //----------Pet Evolution Cup Pet -------------------
@@ -309,7 +369,7 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
   else if ((userActivity.adjusted.steps < ((goals.steps)*4)/5)&& (userActivity.adjusted.steps > ((goals.steps*3)/5)))
            {
              pets = 3;
-             age = 400;
+             age = 50;
            }
   
     //----------Pet Evolution Adult Pet -------------------
@@ -317,60 +377,19 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
   else if ((userActivity.adjusted.steps < goals.steps)&& (userActivity.adjusted.steps > ((goals.steps*4)/5)))
            {
              pets = 4;
-             age = 500;
+             age = 60;
            }
   //---------Game Over Pet ------------------
   
   else if (userActivity.adjusted.steps > goals.steps){
     
     pets = 5;
-    age = 600;
+    age = 30;
     
-  } else { if (seconds % 2 == 0){pet.image = "pet/pet1animate0.png";}
-     else{pet.image = "pet/pet1animate1.png";}}
-  
-  
-  if (userActivity.adjusted.steps < goals.steps/5){evolution.text = "♥";}
-  else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {evolution.text = "♥♥";}
-  else if ((userActivity.adjusted.steps < ((goals.steps)*3)/5)&& (userActivity.adjusted.steps > ((goals.steps*2)/5)))
-  {evolution.text = "♥♥♥";}
-  else if ((userActivity.adjusted.steps < ((goals.steps)*4)/5)&& (userActivity.adjusted.steps > ((goals.steps*3)/5)))
-           {evolution.text = "♥♥♥♥";}
-  else if ((userActivity.adjusted.steps < goals.steps)&& (userActivity.adjusted.steps > ((goals.steps*4)/5)))
-           {evolution.text = "♥♥♥♥♥";}
-  else if (userActivity.adjusted.steps > goals.steps){evolution.text = "♥♥♥♥♥♥";}
-  else {evolution.text = "";}
-
- 
-  
-   /*--- OPTION 2: TIME IMAGES FOR 12 HOUR CLOCK---*/
-  //set class of each # IMAGE individually if needed for formatting
-  if (preferences.clockDisplay === "12h") {
-    // 12h format
-    hours = hours % 12 || 12;
-  }else {hours = util.zeroPad(hours);}
-  myLabel.text = `${hours}:${mins}`; 
-  /*----------------------------SHOW CLOCK END----------------------------------*/                      
-
-/*
-  /*--- Battery Functions ---*/
-  display.addEventListener('change', function () { if (this.on) {checkAndUpdateBatteryLevel();}
-                                             
-});
-/*----------------------------END OF ON TICK-----------------------------------*/
-  
-/*----------------------------START OF FUNCTIONS--------------------------------*/
-
- /*--- Change Battery RED , GREEN & CHARGE ---*/  
-
-function checkAndUpdateBatteryLevel() {
-  batteryLabel.text = `${battery.chargeLevel}%`;
-  if (battery.chargeLevel > 30){ batteryLabel.class = "labelgreen";}
-  else {batteryLabel.class = "labelred";
-        battery.onchange = (charger, evt) => {batteryLabel.class = "labelgreen";}}
-}
- 
-  
+  } else {
+    pets = 2;
+    age = 20;
+  }}
   
 /*--- Change Date and Background Functions ---*/
 
