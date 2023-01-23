@@ -295,22 +295,23 @@ function checkAndUpdateBatteryLevel() {
   
   else if ((userActivity.adjusted.steps >= goals.steps/5) &&  (userActivity.adjusted.steps < goals.steps)){
     
-  if (poops == 0 && annoy > 0) { 
+  if (annoy > 0) { 
     poop.image = "poop/annoy" + (parseInt(mins/10)) + "s"+ seconds%2+ ".png";
     sad ++;
   }else{
     poop.image = "poop/poop" + poops + "s"+ seconds%2+ ".png";
   }
   
-  }
+  
     //If a ghost, show game over + seconds%2 + ".png";
-    else if (userActivity.adjusted.steps >= goals.steps) {
+  } else if (userActivity.adjusted.steps >= goals.steps) {
       if (petnaughty > age){poop.image = "poop/gameoverv0a" + seconds%2 + ".png";}
       else if (basic > age ){poop.image = "poop/gameoverv1a" + seconds%2 + ".png";}
       else {poop.image = "poop/gameoverv2a" + seconds%2 + ".png";}
     }
     //last else statement - show blank
   else {poop.image = "blank.png";}
+ }
   
   function showDino(){
   //Change version number based on stats
