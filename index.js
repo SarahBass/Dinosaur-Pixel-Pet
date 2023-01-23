@@ -130,7 +130,7 @@ if (userActivity.adjusted.steps > goals.steps){background.image = "Gameover.jpeg
   
   
  //Pet creates waste based on time
-  if (userActivity.adjusted.steps%25 == 0){poops++;}
+  if (userActivity.adjusted.steps%25 == 0){poops++; sad--;}
   if (poops < 0 ) {poops = 0;}
   if (poops > 3){poops = 3}
   
@@ -299,7 +299,7 @@ function checkAndUpdateBatteryLevel() {
     
   if (poops == 0) { 
   if (annoy > 0){
-    poop.image = "poop/annoy" + (parseInt(mins/10)) + ".png";
+    poop.image = "poop/annoy" + (parseInt(mins/10)) + "s"+ seconds%2+ ".png";
     if (annoy > 0){annoy ++;}
   }else { 
     if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
