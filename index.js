@@ -66,7 +66,8 @@ const boltlabel = document.getElementById("boltlabel");
 const heartlabel = document.getElementById("heartlabel");
 const stairslabel = document.getElementById("stairslabel");
 const distancelabel = document.getElementById("distancelabel");
-const button1 = document.getElementById("button-1");
+const button2 = document.getElementById("button-1");
+const button1 = document.getElementById("button-2");
 var demoinstance = document.getElementById("demoinstance");
 var demogroup = demoinstance.getElementById("demogroup");
 
@@ -125,24 +126,26 @@ clock.ontick = (evt) => {
 if (userActivity.adjusted.steps > goals.steps){background.image = "Gameover.jpeg";}
   else{background.image = days + ".jpeg";}
   
+
+  
   
  //Pet creates waste based on time
   if (userActivity.adjusted.steps%25 == 0){poops++;}
-  if (poops <= 0 ) {poops = 0;}
-  if (poops >= 5){poops = 5}
+  if (poops < 0 ) {poops = 0;}
+  if (poops > 3){poops = 3}
   
    //Pet gets annoyed based on steps
-  if ((userActivity.adjusted.steps%10) == 0){annoy++;}
-  if (annoy <= 0 ) {annoy = 0;}
-  if (annoy >= 5){annoy = 5}
+  if ((userActivity.adjusted.steps%30) == 0){annoy++;}
+  if (annoy < 0 ) {annoy = 0;}
+  if (annoy > 3){annoy = 3}
   
   //Not Cleaning makes Pet Naughty to level 1000
-  if ( petnaughty >= 100){petnaughty = 100;}
-  if (petnaughty <= 0){petnaughty = 0;}
+  if ( petnaughty > 100){petnaughty = 100;}
+  if (petnaughty < 0){petnaughty = 0;}
   
   //Sleeping increases cuteness level of form to level 1000
-  if (basic >= 100){basic = 100;}
-  if (basic <= 0){basic = 0;} 
+  if (basic > 100){basic = 100;}
+  if (basic < 0){basic = 0;} 
   
     //Annoying Critters increases sadness
   if (sad >= 100){sad = 100;}
@@ -158,20 +161,19 @@ if ((util.zeroPad(hours) == 0)&& (mins == 1)){
   annoy= 0;
 }
   
-    //shake wrist to clear 
+   //Button to give health
+   button2.onclick = function(evt) { 
+   petnaughty-=20;
+   poops --;  
+   console.log("Basic Level: " + basic);
+   console.log("Naughty Level: " + petnaughty);
+   poop.image = "poop/heart.png"; }
+  
+  //Functions to control screen animations
   cleanpoops();
-  
-  //show poop or enemies
   showPoop();
-  
-  //show dinosaur 
   showDino();
-  
-  //show heart meter
   showHearts();
-  
-  //Sleep Mode
-
   showSleep();
   
   
@@ -210,9 +212,12 @@ function checkAndUpdateBatteryLevel() {
    //console.log("Basic Level: " + basic);
    const accelerometer = new Accelerometer({ frequency: 30, batch: 60 });
    accelerometer.addEventListener("reading", () => { 
-    if (accelerometer.y > 6){   
+    if (accelerometer.y > 6 && accelerometer.x > 6 && accelerometer.z > 6){   
       annoy--;
-      poops--;}
+      poops--;
+      sad--;
+    }
+     
   });  
     display.addEventListener("change", () => {
     // Automatically stop the sensor when the screen is off to conserve battery
@@ -295,7 +300,7 @@ function checkAndUpdateBatteryLevel() {
   if (poops == 0) { 
   if (annoy > 0){
     poop.image = "poop/annoy" + (parseInt(mins/10)) + ".png";
-    if (annoy > 2){annoy ++;}
+    if (annoy > 0){annoy ++;}
   }else { 
     if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
      else{poop.image = "poop/nopoop2.png";}}
@@ -327,16 +332,16 @@ function checkAndUpdateBatteryLevel() {
     if (userActivity.adjusted.steps < goals.steps){   
     if (basic > age) {
       if (petnaughty > age ) {
-        version = 0;}
+        version = 3;}
       else { version = 1; }
     }else {
-       if (petnaughty > age) {version = 3;}
+       if (petnaughty > age) {version = 0;}
       else { 
         if (sad > age ) {version=2;}
        else {version = 4;} }
       }
   }else{
-        version = 0;
+        version = 3;
       
   }
   //0 is worst 
