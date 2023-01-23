@@ -165,6 +165,7 @@ if ((util.zeroPad(hours) == 0)&& (mins == 1)){
    button2.onclick = function(evt) { 
    petnaughty-=20;
    poops --;  
+   annoy--;  
    console.log("Basic Level: " + basic);
    console.log("Naughty Level: " + petnaughty);
    poop.image = "poop/heart.png"; }
