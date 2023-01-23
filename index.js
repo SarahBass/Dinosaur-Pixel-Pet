@@ -285,35 +285,22 @@ function checkAndUpdateBatteryLevel() {
      if (seconds % 2 == 0){poop.image = "poop/snake2.png";}
      else{poop.image = "poop/snake3.png";}}
   else if (poops > 2) {
-    petnaughty++;
+    sad++;
      if (seconds % 2 == 0){poop.image = "poop/snake4.png";}
      else{poop.image = "poop/snake5.png";}}
     
   }
   
-  //if not an egg or not a ghost , show poops
-  
-  //if 0 poops , shows annoy every 50 steps
+  //if not an egg or not a ghost , show poops or enemies
   
   else if ((userActivity.adjusted.steps >= goals.steps/5) &&  (userActivity.adjusted.steps < goals.steps)){
     
-  if (poops == 0) { 
-  if (annoy > 0){
+  if (poops == 0 && annoy > 0) { 
     poop.image = "poop/annoy" + (parseInt(mins/10)) + "s"+ seconds%2+ ".png";
-    if (annoy > 0){annoy ++;}
-  }else { 
-    if (seconds % 2 == 0){poop.image = "poop/nopoop1.png";}
-     else{poop.image = "poop/nopoop2.png";}}
-  }else if (poops == 1) {
-     if (seconds % 2 == 0){poop.image = "poop/poop0.png";}
-     else{poop.image = "poop/poop1.png";}}
-  else if (poops == 2) {
-     if (seconds % 2 == 0){poop.image = "poop/poop2.png";}
-     else{poop.image = "poop/poop3.png";}}
-  else if (poops > 2) {
-    petnaughty++;
-     if (seconds % 2 == 0){poop.image = "poop/poop4.png";}
-     else{poop.image = "poop/poop5.png";}}
+    sad ++;
+  }else{
+    poop.image = "poop/poop" + poops + "s"+ seconds%2+ ".png";
+  }
   
   }
     //If a ghost, show game over + seconds%2 + ".png";
@@ -322,10 +309,8 @@ function checkAndUpdateBatteryLevel() {
       else if (basic > age ){poop.image = "poop/gameoverv1a" + seconds%2 + ".png";}
       else {poop.image = "poop/gameoverv2a" + seconds%2 + ".png";}
     }
-    
     //last else statement - show blank
-  else {if (seconds % 2 == 0){poop.image = "blank.png";}
-     else{poop.image = "blank.png";}}}
+  else {poop.image = "blank.png";}
   
   function showDino(){
   //Change version number based on stats
