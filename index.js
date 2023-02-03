@@ -328,14 +328,13 @@ function checkAndUpdateBatteryLevel() {
        else {version = 4;} }
       }
   }else{
-        version = 3;
-      
+        version = 0;
   }
-  //0 is worst 
-  //1 is best and good
-  //2 is sad but good
-  //3 is weird and worst
-  //4 is weird but good
+  //0 is red monster
+  //1 is Triceratops 
+  //2 is longneck
+  //3 show most it is the raptor
+  //4 is the weird one 
     //----------Pet Evolution Baby Pet -------------------
   
   //--------------CHANGE PET FORM IN FOREGROUND ------------------
