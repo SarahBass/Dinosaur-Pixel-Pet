@@ -216,7 +216,7 @@ function checkAndUpdateBatteryLevel() {
     if (accelerometer.y > 6 && accelerometer.x > 6 && accelerometer.z > 6){   
       annoy--;
       poops--;
-      sad--;
+      sad-=10;
     }
      
   });  
@@ -243,7 +243,7 @@ function checkAndUpdateBatteryLevel() {
                     heartlabel.class  = "labelseeblue";
                     stairslabel.class  = "labelseeblue";
                     evolution.class = "none";
-                    basic++;
+                    basic+=10;
                     
                       if (seconds % 2 == 0){object.image = "read.jpeg";}
                       else{object.image = "read1.jpeg";}
@@ -280,9 +280,11 @@ function checkAndUpdateBatteryLevel() {
   if (userActivity.adjusted.steps < goals.steps/5 ){
   if (poops == 0) { poop.image ="blank.png"}
   else if (poops == 1) {
+    petnaughty++;
      if (seconds % 2 == 0){poop.image = "poop/snake0.png";}
      else{poop.image = "poop/snake1.png";}}
   else if (poops == 2) {
+    basic--;
      if (seconds % 2 == 0){poop.image = "poop/snake2.png";}
      else{poop.image = "poop/snake3.png";}}
   else if (poops > 2) {
@@ -300,6 +302,7 @@ function checkAndUpdateBatteryLevel() {
     poop.image = "poop/annoy" + (parseInt(mins/10)) + "s"+ seconds%2+ ".png";
     sad ++;
   }else{
+    petnaughty++;
     poop.image = "poop/poop" + poops + "s"+ seconds%2+ ".png";
   }
   
@@ -343,16 +346,16 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
     //----------Pet Evolution Egg -------------------
   if (userActivity.adjusted.steps < goals.steps/5){
   pets = 0;
-  age = 20;}
+  age = 10;}
   else if ((userActivity.adjusted.steps < ((goals.steps)*2)/5) && (userActivity.adjusted.steps > ((goals.steps*1)/5))) {
          pets = 1;
-         age = 30;
+         age = 20;
   }
   //----------Pet Evolution Mini Pet -------------------
   
   else if ((userActivity.adjusted.steps < ((goals.steps)*3)/5)&& (userActivity.adjusted.steps > ((goals.steps*2)/5))){
          pets = 2;
-         age = 40;
+         age = 30;
   }
   
     //----------Pet Evolution Cup Pet -------------------
@@ -360,7 +363,7 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
   else if ((userActivity.adjusted.steps < ((goals.steps)*4)/5)&& (userActivity.adjusted.steps > ((goals.steps*3)/5)))
            {
              pets = 3;
-             age = 50;
+             age = 40;
            }
   
     //----------Pet Evolution Adult Pet -------------------
@@ -368,18 +371,18 @@ pet.image = "pet/pet" + pets + "v" + version + "a" + seconds%2 + ".png";
   else if ((userActivity.adjusted.steps < goals.steps)&& (userActivity.adjusted.steps > ((goals.steps*4)/5)))
            {
              pets = 4;
-             age = 60;
+             age = 50;
            }
   //---------Game Over Pet ------------------
   
   else if (userActivity.adjusted.steps > goals.steps){
     
     pets = 5;
-    age = 30;
+    age = 10;
     
   } else {
-    pets = 2;
-    age = 20;
+    pets = 0;
+    age = 10;
   }}
   
 /*--- Change Date and Background Functions ---*/
