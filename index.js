@@ -322,13 +322,13 @@ function checkAndUpdateBatteryLevel() {
     if (userActivity.adjusted.steps < goals.steps){   
     if (basic > age) {
       if (petnaughty > age ) {
-        version = 3;}
+        version = 0;}
       else { version = 1; }
     }else {
-       if (petnaughty > age) {version = 0;}
+       if (petnaughty > age) {version = 4;}
       else { 
         if (sad > age ) {version=2;}
-       else {version = 4;} }
+       else {version = 3;} }
       }
   }else{
         version = 0;
