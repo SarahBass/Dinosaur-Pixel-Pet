@@ -216,7 +216,7 @@ function checkAndUpdateBatteryLevel() {
     if (accelerometer.y > 6 && accelerometer.x > 6 && accelerometer.z > 6){   
       annoy--;
       poops--;
-      sad-=10;
+      sad--;
     }
      
   });  
